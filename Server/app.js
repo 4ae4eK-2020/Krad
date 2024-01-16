@@ -15,8 +15,6 @@ fastify.post('/user/', function (req, reply) {
 
   //add data to DB
   fastify.pg.query(
-    //validation
-
     `INSERT INTO public."Users" (name, email, phone, reg_day, is_activated)
     VALUES('${userData.name}'::"text", '${userData.email}'::"text", '${userData.phone}'::"text", '${userData.registration}'::date, '${userData.isActive}'::boolean)`,
     function onResult(err, result) {
