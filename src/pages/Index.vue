@@ -44,9 +44,8 @@ export default {
   },
   mounted() {
      //Полуения списка пользователей
-    fetch("http://127.0.0.1:5501/user/", {
-      mode: 'no-cors',
-    }).then((response) => response.json())
+     const url = new URL("http://localhost:5501/user/")
+    fetch(url).then((response) => response.json())
     .then((json) => {
       this.users = json;
     });

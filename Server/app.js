@@ -1,7 +1,12 @@
 require('dotenv').config()
+const cors = require('@fastify/cors')
 
 const fastify = require('fastify')({
   logger: true
+})
+
+fastify.register(cors, {
+
 })
 
 //connect to DB

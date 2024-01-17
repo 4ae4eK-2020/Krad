@@ -14,6 +14,8 @@
   "dependencies": {
     "@quasar/extras": "^1.16.4",
     "core-js": "^3.6.5",
+    "cors": "^2.8.5",
+    "fastify-cors": "^6.1.0",
     "quasar": "^1.0.0",
     "quasar-cli": "^0.17.26"
   },
