@@ -43,27 +43,30 @@ export default {
     }
   },
   mounted() {
-     //Полуения списка пользователей
-    // fetch("http://localhost:5501/user/").then((response) => response.json())
-    // .then((json) => {
-    //   this.users = json;
-    // });
+    //Полуения списка пользователей
+this.updateTable();
   },
   methods: {
+    updateTable() {
+      fetch("http://localhost:5501/user/").then((response) => response.json())
+        .then((json) => {
+          this.users = json;
+        });
+    },
     updateUser(newUser) {
       let index = this.users.findIndex(u => u.id == newUser.id);
       if (index != -1) {
         this.users.splice(index, 1, newUser);
       }
       console.log(newUser)
-       //Обновление пользователя
+      //Обновление пользователя
       fetch("http://localhost:5501/user/update", {
         method: "POST",
         body: JSON.stringify(newUser),
         headers: {
           "Content-type": "application/json; charset=UTF-8"
         }
-      }); 
+      });
     },
     createUser(newUser) {
       // this.users.push(newUser)
