@@ -44,8 +44,7 @@ export default {
   },
   mounted() {
      //Полуения списка пользователей
-     const url = new URL("http://localhost:5501/user/")
-    fetch(url).then((response) => response.json())
+    fetch("http://localhost:5501/user/").then((response) => response.json())
     .then((json) => {
       this.users = json;
     });
@@ -58,7 +57,7 @@ export default {
       }
 
        //Обновление пользователя
-      fetch("", {
+      fetch("http://localhost:5501/user/update", {
         method: "POST",
         body: JSON.stringify(newUser),
         headers: {
