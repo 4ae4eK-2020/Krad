@@ -24,8 +24,7 @@ fastify.post('/user/new/', function (req, reply) {
     `INSERT INTO public."Users" (name, email, phone, reg_day, is_activated)
     VALUES('${userData.name}'::"text", '${userData.email}'::"text", '${userData.phone}'::"text", '${userData.registration}'::date, '${userData.isactive}'::boolean)`,
     function onResult(err, result) {
-      req.body.id +=1
-      reply.send(err || req.body)
+      reply.send(err || result.rows)
     }
   )
 })

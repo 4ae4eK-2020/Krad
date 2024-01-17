@@ -79,8 +79,8 @@ this.updateTable();
         headers: {
           "Content-type": "application/json; charset=UTF-8"
         }
-      }).then((response) => response.json())
-        .then((user) => this.users.push(user));
+      }).then((response) =>this.updateTable())
+        //.then((user) => this.users.push(user));
     },
     deleteUser(userId) {
       if (this.isUserCreate) {
