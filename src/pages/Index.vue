@@ -42,53 +42,64 @@ export default {
       ]
     }
   },
+  mounted() {
+     //Полуения списка пользователей
+    fetch("").then(response => response.json()).then(json => {
+      this.users = json;
+    });
+  },
   methods: {
     updateUser(newUser) {
       let index = this.users.findIndex(u => u.id == newUser.id);
       if (index != -1) {
         this.users.splice(index, 1, newUser);
       }
-      // fetch("", {
-      //   method: "POST",
-      //   body: JSON.stringify(newUser),
-      //   headers: {
-      //     "Content-type": "application/json; charset=UTF-8"
-      //   }
-      // });
+
+       //Обновление пользователя
+      fetch("", {
+        method: "POST",
+        body: JSON.stringify(newUser),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      }); 
     },
     createUser(newUser) {
-      this.users.push(newUser)
+      // this.users.push(newUser)
       this.isUserCreate = false;
-      // fetch("", {
-      //   method: "POST",
-      //   body: JSON.stringify(newUser),
-      //   headers: {
-      //     "Content-type": "application/json; charset=UTF-8"
-      //   }
-      // }).then((response) => response.json())
-      //   .then((user) => this.users.push(user));
+
+      //Создание пользователя
+      fetch("", {
+        method: "POST",
+        body: JSON.stringify(newUser),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      }).then((response) => response.json())
+        .then((user) => this.users.push(user));
     },
     deleteUser(userId) {
       if (this.isUserCreate) {
         this.isUserCreate = false;
         return;
       }
-      let index = this.users.findIndex(u => u.id == userId);
-      this.users.splice(index, 1);
-
-      // fetch("", {
-      //   method: "POST",
-      //   body: JSON.stringify({ id: userId }),
-      //   headers: {
-      //     "Content-type": "application/json; charset=UTF-8"
-      //   }
-      // }).then((response) => response.json())
-      //   .then((json) => {
-      //     if (json.result = "Done") {
       // let index = this.users.findIndex(u => u.id == userId);
       // this.users.splice(index, 1);
-      //     }
-      //   });
+
+      // Удаление пользователя
+      fetch("", {
+        method: "POST",
+        body: JSON.stringify({ id: userId }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      }).then((response) => response.json())
+        .then((json) => {
+          if (json.result = "Done") {
+            let index = this.users.findIndex(u => u.id == userId);
+            this.users.splice(index, 1);
+          }
+        });
     },
   }
 }
