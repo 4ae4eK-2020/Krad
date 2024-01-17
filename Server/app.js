@@ -1,5 +1,6 @@
 require('dotenv').config()
 const cors = require('@fastify/cors')
+const { json } = require('body-parser')
 
 const fastify = require('fastify')({
   logger: true
@@ -16,24 +17,26 @@ fastify.register(require('@fastify/postgres'), {
 
 //Add new User
 fastify.post('/user/new/', function (req, reply) {
-  let userData = req.body[0]
+  let userData = req.body
 
   //add data to DB
   fastify.pg.query(
     `INSERT INTO public."Users" (name, email, phone, reg_day, is_activated)
-    VALUES('${userData.name}'::"text", '${userData.email}'::"text", '${userData.phone}'::"text", '${userData.registration}'::date, '${userData.isActive}'::boolean)`,
+    VALUES('${userData.name}'::"text", '${userData.email}'::"text", '${userData.phone}'::"text", '${userData.registration}'::date, '${userData.isactive}'::boolean)`,
     function onResult(err, result) {
-      reply.send(err || result.rows)
+      req.body.id +=1
+      reply.send(err || req.body)
     }
   )
 })
 
 //update user
 fastify.post('/user/update', function (req, reply) {
-  let userData = req.body[0]
+  console.log(req.body)
+  let userData = req.body
   fastify.pg.query(
     `UPDATE public."Users" SET
-    name = '${userData.name}'::text, email = '${userData.email}'::text, phone = '${userData.phone}'::text, is_activated = '${userData.isActive}'::boolean WHERE
+    name = '${userData.name}'::text, email = '${userData.email}'::text, phone = '${userData.phone}'::text, is_activated = '${userData.isactive}'::boolean WHERE
     id = '${userData.id}';`,
     function onResult(err, result) {
       reply.send(err || result.rows)
@@ -60,7 +63,7 @@ fastify.post('/user/delete', function (req, reply) {
 //get data from DB
 fastify.get('/user/', function (req, reply) {
   fastify.pg.query(
-    'SELECT id, name, email, phone, reg_day AS registration, is_activated AS isActive FROM public."Users"',
+    'SELECT id, name, email, phone, reg_day AS registration, is_activated AS isactive FROM public."Users" ORDER BY id',
     function onResult(err, result) {
       reply.send(err || result.rows)
     }

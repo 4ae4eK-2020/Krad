@@ -55,7 +55,7 @@ export default {
       if (index != -1) {
         this.users.splice(index, 1, newUser);
       }
-
+      console.log(newUser)
        //Обновление пользователя
       fetch("http://localhost:5501/user/update", {
         method: "POST",
@@ -70,7 +70,7 @@ export default {
       this.isUserCreate = false;
 
       //Создание пользователя
-      fetch("", {
+      fetch("http://localhost:5501/user/new/", {
         method: "POST",
         body: JSON.stringify(newUser),
         headers: {
