@@ -122,7 +122,7 @@ export default {
                     id: this.userid,
                     name: this.currentName,
                     email: this.currentEmail,
-                    registration: this.currentRegistration,
+                    registration: new Date(this.currentRegistration).toISOString(),
                     phone: this.currentPhone,
                     isactive: this.currentIsActive,
                 };
