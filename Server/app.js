@@ -44,7 +44,9 @@ fastify.post('/user/delete', function (req, reply) {
     WHERE id IN
         (${userData});`,
     function onResult(err, result) {
-      reply.send(err || result.rows)
+      reply.send(err || {
+        result: "Done"
+      })
     }
   )
 
@@ -70,4 +72,8 @@ const start = async () => {
   }
 }
 start()
+
+function valudationUser(_user) {
+
+}
 
