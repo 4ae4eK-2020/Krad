@@ -91,7 +91,7 @@ this.updateTable();
       // this.users.splice(index, 1);
 
       // Удаление пользователя
-      fetch("", {
+      fetch("http://localhost:5501/user/delete", {
         method: "POST",
         body: JSON.stringify({ id: userId }),
         headers: {

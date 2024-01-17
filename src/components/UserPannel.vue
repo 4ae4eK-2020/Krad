@@ -58,7 +58,6 @@ export default {
         isUpdate() {
             if (this.currentName != this.username ||
                 this.currentEmail != this.email ||
-                this.currentId != this.userid ||
                 this.currentPhone != this.phone ||
                 this.currentIsActive !== this.isActive ||
                 this.currentRegistration != this.registration) {
