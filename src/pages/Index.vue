@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex column items-start items-center q-gutter-lg">
     <UserPannel v-for="(u, index) in users" :key="index" :userid="u.id" :username="u.name" :email="u.email"
-      :phone="u.phone" :registration="u.registration" :isActive="u.isActive" @updateUser="updateUser"
+      :phone="u.phone" :registration="u.registration" :isActive="u.isactive" @updateUser="updateUser"
       @deleteUser="deleteUser" />
 
     <UserPannel v-if="isUserCreate" :userid="users.length" @updateUser="createUser" @deleteUser="deleteUser"
@@ -23,7 +23,7 @@ export default {
     return {
       isUserCreate: false,
       users: [
-        {
+        /*{
           id: 0,
           name: "asd asdf fddd",
           email: "ASdWww@asd.ras",
@@ -38,13 +38,16 @@ export default {
           registration: "2024-01-03",
           phone: "+7 (678) 987 - 45 - 21",
           isActive: true,
-        }
+        }*/
       ]
     }
   },
   mounted() {
      //Полуения списка пользователей
-    fetch("").then(response => response.json()).then(json => {
+    fetch("http://127.0.0.1:5501/user/", {
+      mode: 'no-cors',
+    }).then((response) => response.json())
+    .then((json) => {
       this.users = json;
     });
   },

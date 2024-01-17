@@ -10,7 +10,7 @@ fastify.register(require('@fastify/postgres'), {
 })
 
 //Add new User
-fastify.post('/user/', function (req, reply) {
+fastify.post('/user/new/', function (req, reply) {
   let userData = req.body[0]
 
   //add data to DB
@@ -55,7 +55,7 @@ fastify.post('/user/delete', function (req, reply) {
 //get data from DB
 fastify.get('/user/', function (req, reply) {
   fastify.pg.query(
-    'SELECT * FROM public."Users"',
+    'SELECT id, name, email, phone, reg_day AS registration, is_activated AS isActive FROM public."Users"',
     function onResult(err, result) {
       reply.send(err || result.rows)
     }
