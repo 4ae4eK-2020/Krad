@@ -124,7 +124,7 @@ export default {
                     email: this.currentEmail,
                     registration: this.currentRegistration,
                     phone: this.currentPhone,
-                    isActive: this.currentIsActive,
+                    isactive: this.currentIsActive,
                 };
                 this.$emit("updateUser", newUser)
             });
