@@ -48,7 +48,7 @@ this.updateTable();
   },
   methods: {
     updateTable() {
-      fetch("http://localhost:5501/user/").then((response) => response.json())
+      fetch("http://localhost:5501/users/getUser").then((response) => response.json())
         .then((json) => {
           this.users = json;
         });
@@ -60,7 +60,7 @@ this.updateTable();
       }
       console.log(newUser)
       //Обновление пользователя
-      fetch("http://localhost:5501/user/update", {
+      fetch("http://localhost:5501/users/update", {
         method: "POST",
         body: JSON.stringify(newUser),
         headers: {
@@ -73,7 +73,7 @@ this.updateTable();
       this.isUserCreate = false;
 
       //Создание пользователя
-      fetch("http://localhost:5501/user/new/", {
+      fetch("http://localhost:5501/users/create", {
         method: "POST",
         body: JSON.stringify(newUser),
         headers: {
@@ -91,7 +91,7 @@ this.updateTable();
       // this.users.splice(index, 1);
 
       // Удаление пользователя
-      fetch("http://localhost:5501/user/delete", {
+      fetch("http://localhost:5501/users/delete", {
         method: "POST",
         body: JSON.stringify({ id: userId }),
         headers: {
