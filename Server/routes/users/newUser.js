@@ -157,11 +157,13 @@ module.exports = function (fastify, opts, next) {
         url: '/create/description',
         method: "POST",
         schema: {
-            id: {
-                type: "integer"
-            },
-            value: {
-                type: "string"
+            body: {
+                id: {
+                    type: "integer"
+                },
+                value: {
+                    type: "string"
+                }
             }
         },
         async handler(request, reply) {
@@ -176,11 +178,13 @@ module.exports = function (fastify, opts, next) {
         url: '/create/description',
         method: "PUT",
         schema: {
-            id: {
-                type: "integer"
-            },
-            value: {
-                type: "string"
+            body: {
+                id: {
+                    type: "integer"
+                },
+                value: {
+                    type: "string"
+                }
             }
         },
         async handler(request, reply) {

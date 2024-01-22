@@ -1,7 +1,7 @@
 const { pool } = require('../../services/libs/pool')
 const fs = require('fs')
 
-async function createUser(object) {
+async function createUser(obj) {
     let data = {
         message: 'error',
         statusCode: 400,
@@ -13,13 +13,13 @@ async function createUser(object) {
     try {
         const user = await client.query(
             `INSERT INTO public."Users" (name, email, phone, reg_day, is_activated)
-          VALUES($1, $2, $3, $4, $5) RETURNING *`,
+          VALUES($1, $2, $3, $4, $5) RETURNING id`,
             [
-                object.name,
-                object.email,
-                object.phone,
-                object.registration,
-                object.isactive
+                obj.name,
+                obj.email,
+                obj.phone,
+                obj.registration,
+                obj.isactive
             ],
         )
 
@@ -38,7 +38,7 @@ async function createUser(object) {
     return data
 }
 
-async function readUser(object) {
+async function readUser(obj) {
     let data = {
         message: 'error',
         statusCode: 400,
@@ -68,7 +68,7 @@ async function readUser(object) {
     return data
 }
 
-async function updateUser(object) {
+async function updateUser(obj) {
     let data = {
         message: 'error',
         statusCode: 400,
@@ -79,23 +79,24 @@ async function updateUser(object) {
 
     try {
         const haveRow = await client.query(
-            `SELECT * FROM public."Users" WHERE id=$1`, [object.id]
+            `SELECT * FROM public."Users" WHERE id=$1`, [obj.id]
         )
-
-        if (haveRow.rowCount == 0) {
+            console.log(haveRow.rows)
+        if (haveRow.rows.length == 0) {
             data.message = "Not found"
             data.statusCode = 404
+            return data
         } else {
             const user = await client.query(
                 `UPDATE public."Users" SET
     name = $1, email = $2, phone = $3, is_activated = $4 WHERE
-    id = $5 RETURNING *`,
+    id = $5 RETURNING id`,
                 [
-                    object.name,
-                    object.email,
-                    object.phone,
-                    object.isactive,
-                    object.id
+                    obj.name,
+                    obj.email,
+                    obj.phone,
+                    obj.isactive,
+                    obj.id
                 ]
             )
             console.log(user)
@@ -115,7 +116,7 @@ async function updateUser(object) {
     return data
 }
 
-async function deleteUser(object) {
+async function deleteUser(obj) {
     let data = {
         message: 'error',
         statusCode: 400
@@ -126,16 +127,16 @@ async function deleteUser(object) {
 
     try {
         const haveRow = await client.query(
-            `SELECT * FROM public."Users" WHERE id=$1`, [object.id]
+            `SELECT * FROM public."Users" WHERE id=$1`, [obj.id]
         )
 
-        if (haveRow.rowCount == 0) {
+        if (haveRow.rows == []) {
             data.message = "Not found"
             data.statusCode = 404
         } else {
             const user = await client.query(
                 `DELETE FROM public."Users"
-        WHERE id=$1`, [object.id]
+        WHERE id=$1`, [obj.id]
             )
 
             console.log(user)
@@ -154,7 +155,7 @@ async function deleteUser(object) {
     return data
 }
 
-async function filterUser(object) {
+async function filterUser(obj) {
     let data = {
         message: 'error',
         statusCode: 400,
@@ -167,8 +168,8 @@ async function filterUser(object) {
         let user
         let sqlString = `SELECT id, name, email, phone, reg_day AS registration, is_activated AS isactive FROM public."Users" WHERE`
 
-        for (let index = 0; index < object.type.length; index++) {
-            switch (object.type[index]) {
+        for (let index = 0; index < obj.type.length; index++) {
+            switch (obj.type[index]) {
                 case 'id':
                     sqlString += ` id=$${index + 1} AND`
                     break;
@@ -192,13 +193,13 @@ async function filterUser(object) {
                     break;
             }
         }
-        console.log(sqlString, ...object.value)
+        console.log(sqlString, ...obj.value)
         user = await client.query(
-            sqlString.slice(0, -4) + ` ORDER BY id`, object.value
+            sqlString.slice(0, -4) + ` ORDER BY id`, obj.value
         )
 
 
-        console.log(object.type, object.value, user)
+        console.log(obj.type, obj.value, user)
         if (user.rowCount == 0) {
             data.message = "user not found"
             return data
@@ -219,7 +220,7 @@ async function filterUser(object) {
     return data
 }
 
-async function addDescriptionUser(object) {
+async function addDescriptionUser(obj) {
     let data = {
         message: 'error',
         statusCode: 400,
@@ -232,18 +233,21 @@ async function addDescriptionUser(object) {
     let fileName = "description_"
 
     try {
+        console.log(obj.id)
         const descriptionPath = await client.query(
-            `SELECT description FROM public."Users" WHERE id=$1`, [object.id]
+            `SELECT description FROM public."Users" WHERE id=$1`, [obj.id]
         )
-        const path = descriptionPath.rows[0].description || "./data/" + fileName
-        let description = object.value
+        console.log(obj.value)
+        const path = descriptionPath.rows[0].description || "./data/" + fileName + obj.id
+        let description = obj.value
 
         await fs.writeFile(path + ".txt", description, "utf-8", () => { })
         
         const user = await client.query(
             `UPDATE public."Users" SET
-            description=$1`, [path])
-
+            description=$1
+            WHERE id=$2`, [path, obj.id])
+        console.log(user)
         data.message = `Write compliete`
         data.statusCode = 200
 
@@ -260,7 +264,7 @@ async function addDescriptionUser(object) {
     return data
 }
 
-async function getDescriptionUser(object) {
+async function getDescriptionUser(obj) {
     let data = {
         message: 'error',
         statusCode: 400,
@@ -274,9 +278,9 @@ async function getDescriptionUser(object) {
 
     try {
         const descriptionPath = await client.query(
-            `SELECT description FROM public."Users" WHERE id=$1`, [object.id]
+            `SELECT description FROM public."Users" WHERE id=$1`, [obj.id]
         )
-        const path = descriptionPath.rows[0].description || "./data/" + fileName
+        const path = descriptionPath.rows[0].description || "./data/" + fileName + obj.id
 
         data.message = await fs.readFileSync(path + ".txt", "utf-8")
         data.statusCode = 200
