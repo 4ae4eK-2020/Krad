@@ -315,19 +315,19 @@ async function createPdfDoc(obj) {
             }
         }
         pdfMake.setFonts(fonts);
-        console.log(obj.query.fullName)
+        console.log(obj.fullName)
 
-        const docId = obj.query.docId || 0
-        const fullName = obj.query.fullName || ""
-        const abbreviation = obj.query.abbreviation || ""
-        const orgn = obj.query.orgn || 0
-        const inn = obj.query.inn || 0
-        const placeAdress = obj.query.placeAdress || ""
-        const postAdress = obj.query.postAdress || 0
-        const fio = obj.query.fio || ""
-        const pasportNumbers = obj.query.pasportNumbers || 0
-        const phone = obj.query.phone || 0
-        const email = obj.query.email || ""
+        const docId = obj.docId || 0
+        const fullName = obj.fullName || ""
+        const abbreviation = obj.abbreviation || ""
+        const orgn = obj.orgn || 0
+        const inn = obj.inn || 0
+        const placeAdress = obj.placeAdress || ""
+        const postAdress = obj.postAdress || 0
+        const fio = obj.fio || ""
+        const pasportNumbers = obj.pasportNumbers || 0
+        const phone = obj.phone || 0
+        const email = obj.email || ""
 
         let docData = {
             content: [

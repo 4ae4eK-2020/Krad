@@ -199,9 +199,9 @@ module.exports = function (fastify, opts, next) {
     //create pdf
     fastify.route({
         url: '/create/pdf',
-        method: "GET",
+        method: "POST",
         schema: {
-            querystring: {
+            body: {
                 docId: {
                     type : 'integer'
                 },
@@ -238,7 +238,7 @@ module.exports = function (fastify, opts, next) {
             }
         },
         async handler(request, reply) {
-            const data = await createPdfDoc(request)
+            const data = await createPdfDoc(request.body)
             reply.header('Content-Type', 'application/pdf')
             reply.status(data.statusCode)
             reply.send(data.message)
