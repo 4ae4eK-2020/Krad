@@ -1,4 +1,4 @@
-const { createUser, readUser, updateUser, deleteUser, filterUser, addDescriptionUser, getDescriptionUser } = require('../../handlers/users/crud')
+const { createUser, readUser, updateUser, deleteUser, filterUser, addDescriptionUser, getDescriptionUser, createPdfDoc } = require('../../handlers/users/crud')
 
 module.exports = function (fastify, opts, next) {
     //create
@@ -192,6 +192,56 @@ module.exports = function (fastify, opts, next) {
             const data = await getDescriptionUser(request.body)
             reply.status(data.statusCode)
             reply.send(data)
+        }
+    })
+
+
+    //create pdf
+    fastify.route({
+        url: '/create/pdf',
+        method: "GET",
+        schema: {
+            querystring: {
+                docId: {
+                    type : 'integer'
+                },
+                fullName: {
+                    type: 'string'
+                },
+                abbreviation: {
+                    type: 'string'
+                },
+                orgn: {
+                    type: 'integer'
+                },
+                inn: {
+                    type: 'integer'
+                },
+                placeAdress: {
+                    type: 'string'
+                },
+                postAdress: {
+                    type: 'integer'
+                },
+                fio: {
+                    type: 'string'
+                },
+                pasportNumbers: {
+                    type: 'integer'
+                },
+                phone: {
+                    type: 'string'
+                },
+                email: {
+                    type: 'string'
+                }
+            }
+        },
+        async handler(request, reply) {
+            const data = await createPdfDoc(request)
+            reply.header('Content-Type', 'application/pdf')
+            reply.status(data.statusCode)
+            reply.send(data.message)
         }
     })
 
